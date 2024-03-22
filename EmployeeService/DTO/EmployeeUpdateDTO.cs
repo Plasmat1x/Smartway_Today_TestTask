@@ -1,4 +1,4 @@
-﻿namespace Service.Models
+﻿namespace Service.DTO
 {
     public class EmployeeUpdateDTO
     {

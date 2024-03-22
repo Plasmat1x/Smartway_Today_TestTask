@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 
+using Service.DTO;
 using Service.Interfaces;
-using Service.Models;
 
 namespace Api.Controllers
 {
@@ -19,28 +20,42 @@ namespace Api.Controllers
         [HttpPost("Create")]
         public async Task<IActionResult> Create(EmployeeCreateDTO model)
         {
-            await employeeService.CreateEmployee(model);
-            return Ok();
+            int res = await employeeService.CreateEmployee(model.Name, model.Surname, model.Phone, model.CompanyId, model.DepartmentName, model.DepartmentPhone, model.PassportType, model.PassportNumber);
+            return Ok(res);
         }
 
-        [HttpPost("Delete")]
+        [HttpDelete("Delete")]
         public async Task<IActionResult> Delete(int id)
         {
             await employeeService.DeleteEmployee(id);
             return Ok();
         }
 
-        [HttpPost("Update")]
+        [HttpPut("Update")]
         public async Task<IActionResult> Update(int employeeId, EmployeeUpdateDTO model)
         {
-            await employeeService.UpdateEmployee(employeeId, model);
+            await employeeService.UpdateEmployee(employeeId, model.Name, model.Surname, model.Phone, model.CompanyId, model.DepartmentName, model.DepartmentPhone, model.PassportType, model.PassportNumber);
             return Ok();
         }
 
-        [HttpPost("Get")]
-        public async Task<IActionResult> Get()
+        [HttpGet("GetByCompany")]
+        public async Task<IActionResult> GetByCompany(int companyId)
         {
-            return Ok();
+            var res = await employeeService.GetEmplyeesByCompany(companyId);
+
+            if(res.IsNullOrEmpty())
+            {
+                return NotFound("is null or empty");
+            }
+            return Ok(res);
+        }
+
+        [HttpGet("GetByCompanyDepartment")]
+        public async Task<IActionResult> GetByCompanyDepartment(int companyId, string departmentName)
+        {
+            var res = await employeeService.GetEmplyeesByCompanyDepartment(companyId, departmentName);
+
+            return Ok(res);
         }
     }
 }

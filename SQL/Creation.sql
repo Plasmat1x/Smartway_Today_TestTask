@@ -1,0 +1,21 @@
+CREATE DATABASE stt_db;
+GO
+
+USE stt_db;
+
+CREATE TABLE Departments (
+    Id INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+    Name VARCHAR(32) NOT NULL,
+    Phone VARCHAR(32)  NOT NULL,
+);
+
+CREATE TABLE Employees (
+    Id INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+    Name VARCHAR(32) NOT NULL,
+    Surname VARCHAR(32) NOT NULL,
+    Phone VARCHAR(32) NOT NULL,
+    PassportType VARCHAR(32) NOT NULL,
+    PassportNumber VARCHAR(32) NOT NULL,
+    CompanyId INT NOT NULL CHECK(CompanyId > 0),
+    DepartmentId INT NOT NULL FOREIGN KEY REFERENCES Departments(Id)
+);
